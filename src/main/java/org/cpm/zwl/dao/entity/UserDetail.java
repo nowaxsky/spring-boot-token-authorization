@@ -6,15 +6,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "T_USER")
-public class User {
+@Table(name = "T_USER_DETAIL")
+public class UserDetail {
 
   @Id
   @Column(name = "USER_ID")
   private String userId;
-
-  @Column(name = "PASSWORD")
-  private String password;
+  
+  @Column(name = "USERNAME")
+  private String username;
 
   public String getUserId() {
     return userId;
@@ -24,12 +24,12 @@ public class User {
     this.userId = userId;
   }
 
-  public String getPassword() {
-    return password;
+  public String getUsername() {
+    return username;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public void setUsername(String username) {
+    this.username = username;
   }
-
+  
 }
