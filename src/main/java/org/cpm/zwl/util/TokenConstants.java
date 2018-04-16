@@ -9,11 +9,6 @@ package org.cpm.zwl.util;
 public class TokenConstants {
 
   /**
-   * 存储当前登录用户id的字段名
-   */
-  public static final String CURRENT_USER_ID = "CURRENT_USER_ID";
-
-  /**
    * token有效期間(分鐘)
    */
   public static final int TOKEN_EXPIRES_MIN = 30;

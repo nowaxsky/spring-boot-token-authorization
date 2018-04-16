@@ -5,7 +5,7 @@ import org.cpm.zwl.authorization.manager.TokenManager;
 import org.cpm.zwl.authorization.model.TokenModel;
 import org.cpm.zwl.dao.entity.User;
 import org.cpm.zwl.dao.persistence.UserRepository;
-import org.cpm.zwl.model.ResultModel;
+import org.cpm.zwl.presentation.vos.ResponseModel;
 import org.cpm.zwl.util.ResultStatus;
 import org.cpm.zwl.util.TokenConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class TokenController {
       @ApiImplicitParam(name = "password", value = "密碼", required = true, dataType = "string",
           paramType = "query")})
   @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public ResponseEntity<ResultModel> login(@RequestParam String userId,
+  public ResponseEntity<ResponseModel> login(@RequestParam String userId,
       @RequestParam String password) {
 
     System.out.println("userId: " + userId);
@@ -60,14 +60,14 @@ public class TokenController {
     // 未註冊或密碼錯誤則登入失敗
     if (user == null || !user.getPassword().equals(password)) {
       // 提示用户名或密码错误
-      return new ResponseEntity<>(ResultModel.error(ResultStatus.USERNAME_OR_PASSWORD_ERROR),
+      return new ResponseEntity<>(ResponseModel.error(ResultStatus.USERNAME_OR_PASSWORD_ERROR),
           HttpStatus.NOT_FOUND);
     }
 
     // 產生一組token
     TokenModel model = tokenManager.createToken(user.getUserId());
     System.out.println("login");
-    return new ResponseEntity<>(ResultModel.ok(model), HttpStatus.OK);
+    return new ResponseEntity<>(ResponseModel.ok(model), HttpStatus.OK);
   }
 
   /**
@@ -80,9 +80,9 @@ public class TokenController {
   @ApiImplicitParam(name = "authorization", value = "authorization", required = true,
       dataType = "string", paramType = "header")
   @RequestMapping(value = "/hello", method = RequestMethod.GET)
-  public ResponseEntity<ResultModel> hello(String name) {
+  public ResponseEntity<ResponseModel> hello(String name) {
     String hello = "hello " + name;
-    return new ResponseEntity<>(ResultModel.ok(hello), HttpStatus.OK);
+    return new ResponseEntity<>(ResponseModel.ok(hello), HttpStatus.OK);
   }
 
   /**
@@ -95,9 +95,9 @@ public class TokenController {
   @ApiImplicitParam(name = "authorization", value = "authorization", required = true,
       dataType = "string", paramType = "header")
   @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
-  public ResponseEntity<ResultModel> logout(HttpServletRequest request) {
+  public ResponseEntity<ResponseModel> logout(HttpServletRequest request) {
     tokenManager.deleteToken(request.getHeader(TokenConstants.AUTHORIZATION));
-    return new ResponseEntity<>(ResultModel.ok(), HttpStatus.OK);
+    return new ResponseEntity<>(ResponseModel.ok(), HttpStatus.OK);
   }
 
 
