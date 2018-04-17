@@ -57,9 +57,8 @@ public class TokenController {
 
     User user = userRepository.findByUserId(userId);
 
-    // 未註冊或密碼錯誤則登入失敗
+    // 未註冊或密碼錯誤則失敗
     if (user == null || !user.getPassword().equals(password)) {
-      // 提示用户名或密码错误
       return new ResponseEntity<>(ResponseModel.error(ResultStatus.USERNAME_OR_PASSWORD_ERROR),
           HttpStatus.NOT_FOUND);
     }
