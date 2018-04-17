@@ -1,6 +1,7 @@
 package org.cpm.zwl.authorization.manager;
 
 import org.cpm.zwl.authorization.model.TokenModel;
+import org.cpm.zwl.dao.entity.UserDetail;
 
 /**
  * token管理
@@ -24,7 +25,7 @@ public interface TokenManager {
    * @param token
    * @return
    */
-  public boolean checkToken(String token);
+  public UserDetail checkToken(String token);
 
   /**
    * 清除token

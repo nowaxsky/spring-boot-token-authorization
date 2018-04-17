@@ -39,19 +39,19 @@ public class RedisTokenManager implements TokenManager {
     return model;
   }
 
-  public boolean checkToken(String token) {
+  public UserDetail checkToken(String token) {
     if (token == null || token.length() == 0) {
-      return false;
+      return null;
     }
     UserDetail userDetail = redis.boundValueOps(token).get();
     if (userDetail == null) {
-      return false;
+      return null;
     }
     // 若驗證成功則延長token的到期時間
     redis.boundValueOps(token).expire(TokenConstants.TOKEN_EXPIRES_MIN, TimeUnit.MINUTES);
     System.out.println("userId: " + userDetail.getUserId());
     System.out.println("username: " + userDetail.getUsername());
-    return true;
+    return userDetail;
   }
 
   public void deleteToken(String userId) {

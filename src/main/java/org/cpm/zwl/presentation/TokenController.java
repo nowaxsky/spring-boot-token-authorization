@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.cpm.zwl.authorization.manager.TokenManager;
 import org.cpm.zwl.authorization.model.TokenModel;
 import org.cpm.zwl.dao.entity.User;
+import org.cpm.zwl.dao.entity.UserDetail;
 import org.cpm.zwl.dao.persistence.UserRepository;
 import org.cpm.zwl.presentation.vos.ResponseModel;
 import org.cpm.zwl.util.ResultStatus;
@@ -76,11 +77,13 @@ public class TokenController {
    * @return
    */
   @ApiOperation(value = "登入後印出hello")
-  @ApiImplicitParam(name = "authorization", value = "authorization", required = true,
+  @ApiImplicitParam(name = "authorization", value = "authorization", required = false,
       dataType = "string", paramType = "header")
   @RequestMapping(value = "/hello", method = RequestMethod.GET)
-  public ResponseEntity<ResponseModel> hello(String name) {
-    String hello = "hello " + name;
+  public ResponseEntity<ResponseModel> hello(HttpServletRequest request) {
+    UserDetail userDetail =
+        tokenManager.checkToken(request.getHeader(TokenConstants.AUTHORIZATION));
+    String hello = "hello: " + userDetail.getUsername() + "(" + userDetail.getUserId() + ")";
     return new ResponseEntity<>(ResponseModel.ok(hello), HttpStatus.OK);
   }
 
@@ -91,14 +94,12 @@ public class TokenController {
    * @return
    */
   @ApiOperation(value = "登出")
-  @ApiImplicitParam(name = "authorization", value = "authorization", required = true,
+  @ApiImplicitParam(name = "authorization", value = "authorization", required = false,
       dataType = "string", paramType = "header")
   @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
   public ResponseEntity<ResponseModel> logout(HttpServletRequest request) {
     tokenManager.deleteToken(request.getHeader(TokenConstants.AUTHORIZATION));
     return new ResponseEntity<>(ResponseModel.ok(), HttpStatus.OK);
   }
-
-
 
 }
